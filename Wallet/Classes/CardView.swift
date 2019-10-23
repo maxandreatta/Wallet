@@ -45,16 +45,6 @@ open class CardView: UIView {
         }
     }
     
-    /** This block is called to determine if a card view can be panned. */
-    public var cardViewCanPanBlock: WalletView.CardViewShouldAllowBlock?
-    
-    /** This block is called to determine if a card view can be panned. */
-    public var cardViewCanReleaseBlock: WalletView.CardViewShouldAllowBlock?
-    
-    private var calledCardViewBeganPanBlock = true
-    /** This block is called when a card view began panning. */
-    public var cardViewBeganPanBlock: WalletView.CardViewBeganPanBlock?
-    
     /** This method is called when the card view is panned. */
     @objc open func panned(gestureRecognizer: UIPanGestureRecognizer) {
         
