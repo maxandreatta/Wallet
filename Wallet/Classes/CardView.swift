@@ -1,5 +1,3 @@
-import UIKit
-
 /**  The CardView class defines the attributes and behavior of the cards that appear in WalletView objects. */
 open class CardView: UIView {
     
@@ -51,15 +49,10 @@ open class CardView: UIView {
         switch gestureRecognizer.state {
         case .began:
             walletView?.grab(cardView: self, popup: false)
-            calledCardViewBeganPanBlock = false
         case .changed:
             updateGrabbedCardViewOffset(gestureRecognizer: gestureRecognizer)
         default:
-            if cardViewCanReleaseBlock?() == false {
-                walletView?.layoutWalletView(animationDuration: WalletView.grabbingAnimationSpeed)
-            } else {
-                walletView?.releaseGrabbedCardView()
-            }
+            walletView?.releaseGrabbedCardView()
         }
         
     }
@@ -72,21 +65,17 @@ open class CardView: UIView {
             walletView?.grab(cardView: self, popup: true)
         case .changed: ()
         default:
-            if cardViewCanReleaseBlock?() == false {
-                walletView?.layoutWalletView(animationDuration: WalletView.grabbingAnimationSpeed)
-            } else {
-                walletView?.releaseGrabbedCardView()
-            }
+            walletView?.releaseGrabbedCardView()
         }
         
         
     }
     
-    public let tapGestureRecognizer    = UITapGestureRecognizer()
-    public let panGestureRecognizer    = UIPanGestureRecognizer()
-    public let longGestureRecognizer   = UILongPressGestureRecognizer()
-    
     // MARK: Private methods
+    
+    let tapGestureRecognizer    = UITapGestureRecognizer()
+    let panGestureRecognizer    = UIPanGestureRecognizer()
+    let longGestureRecognizer   = UILongPressGestureRecognizer()
     
     func setupGestures() {
         
@@ -109,10 +98,6 @@ open class CardView: UIView {
         let offset = gestureRecognizer.translation(in: walletView).y
         if presented && offset > 0 {
             walletView?.updateGrabbedCardView(offset: offset)
-            if cardViewCanPanBlock?() == true, calledCardViewBeganPanBlock == false {
-                cardViewBeganPanBlock?()
-                calledCardViewBeganPanBlock = true
-            }
         } else if !presented {
             walletView?.updateGrabbedCardView(offset: offset)
         }
@@ -128,14 +113,6 @@ extension CardView: UIGestureRecognizerDelegate {
      - parameter gestureRecognizer: An instance of a subclass of the abstract base class UIGestureRecognizer. This gesture-recognizer object is about to begin processing touches to determine if its gesture is occurring.
      */
     open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        
-        if gestureRecognizer == panGestureRecognizer {
-            let cardViewCanPan = cardViewCanPanBlock?() ?? true
-            if !cardViewCanPan {
-                return false
-            }
-        }
         
         if gestureRecognizer == longGestureRecognizer && presented {
             return false
@@ -178,3 +155,4 @@ internal extension UIView {
     }
     
 }
+
