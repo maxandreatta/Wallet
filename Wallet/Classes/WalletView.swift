@@ -607,7 +607,7 @@ open class WalletView: UIView {
         //let walletHeaderHeight = walletHeader?.frame.height ?? 0
         //let walletHeaderHeight = 0
         
-        contentSize.height = (insertedCardViews.last?.frame.maxY ?? walletHeaderHeight) - (maximumCardViewHeight/2)
+        contentSize.height = (insertedCardViews.last?.frame.maxY ?? walletHeaderHeight) + (maximumCardViewHeight/2)
         
         if !contentSize.equalTo(scrollView.contentSize) {
             scrollView.contentSize = contentSize
